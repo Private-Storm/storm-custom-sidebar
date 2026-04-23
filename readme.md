@@ -6,6 +6,8 @@
 ![HA](https://img.shields.io/badge/Home%20Assistant-compatible-41BDF5?style=flat-square&logo=home-assistant)
 ![License](https://img.shields.io/badge/license-GPL-green?style=flat-square)
 
+![Preview](https://github.com/Private-Storm/storm-custom-sidebar/blob/main/sidebar.png)
+
 ---
 
 ## ✨ Features
@@ -257,7 +259,7 @@ buttons:
 
 | Property | Required | Description                                                                                         |
 | -------- | -------- | --------------------------------------------------------------------------------------------------- |
-| `name`   | ✅        | Display label. Use `"---"` to render a separator line                                               |
+| `name`   | ✅       | Display label. Use `"---"` to render a separator line                                               |
 | `icon`   | —        | MDI icon string, e.g. `mdi:sofa`                                                                    |
 | `svg`    | —        | Path to a custom SVG file, e.g. `/local/icons/home.svg`. Takes priority over `icon` if both are set |
 | `path`   | —        | Navigation path, e.g. `/lovelace/my-view`                                                           |
@@ -288,9 +290,9 @@ buttons:
 SVG files are loaded from your Home Assistant `www/` folder. Place your files there and reference them as `/local/your-file.svg`.
 
 > **Important:** For SVG icons to respond correctly to `icon-color`, `icon-color-hover` and `icon-color-active`, the SVG file must use `currentColor` for its fill or stroke values instead of hardcoded colors.
-> 
+>
 > Example of a correctly prepared SVG:
-> 
+>
 > ```xml
 > <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
 >   <path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
@@ -305,7 +307,7 @@ Badges display a live entity value as a small pill overlay on the navigation ite
 
 | Property          | Required | Description                                     |
 | ----------------- | -------- | ----------------------------------------------- |
-| `entity`          | ✅        | The HA entity whose state is displayed          |
+| `entity`          | ✅       | The HA entity whose state is displayed          |
 | `color`           | —        | Background color of the badge                   |
 | `text-color`      | —        | Text color of the badge label                   |
 | `border-color`    | —        | Border color of the badge                       |

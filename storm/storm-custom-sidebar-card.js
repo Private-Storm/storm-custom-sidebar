@@ -12,7 +12,7 @@
  * Created:       2026
  * License:       GPL
  *
- * GitHub:        [Optional: Link zu deinem Repository]
+ * GitHub:        https://github.com/Private-Storm/storm-custom-sidebar
  *
  * Features:
  * - Responsive design (Collapsed/Expanded)

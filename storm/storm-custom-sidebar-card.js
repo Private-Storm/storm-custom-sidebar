@@ -7,7 +7,7 @@
  *                Supports collapsed/expanded states, active item tracking,
  *                and dynamic styling via YAML configuration.
  *
- * Version:       1.2.0
+ * Version:       1.4.0
  * Author:        Marc Maruschka a.k.a. stOrM!
  * Created:       2026
  * License:       GPL
@@ -23,7 +23,9 @@
  * Change Log:
  * v1.0.0 - Initial release, fixed icon centering and selection bar logic.
  * v1.1.0 - Added Badge support.
- * v1.2.0 - Added SVG support
+ * v1.2.0 - Added SVG support.
+ * v1.3.0 - Sidebar state (collapsed/expanded) persisted via localStorage.
+ * v1.4.0 - Mobile hover fix via @media (hover: none).
  * ==================================================================================
  */
 import {
@@ -77,7 +79,16 @@ class StormCustomSidebar extends LitElement {
 
   constructor() {
     super();
-    this._collapsed = false;
+    try {
+      this._collapsed =
+        localStorage.getItem("storm-sidebar-collapsed") === "true";
+    } catch (e) {
+      this._collapsed = false;
+      console.warn(
+        "[storm-card] ⚠️ localStorage not available — sidebar state will not persist. Reason:",
+        e.message,
+      );
+    }
     this._footerExpanded = false;
     this._hoverIndex = -1;
     this._sidebarHeight = window.innerHeight;
@@ -164,6 +175,14 @@ class StormCustomSidebar extends LitElement {
 
   _handleToggle() {
     this._collapsed = !this._collapsed;
+    try {
+      localStorage.setItem("storm-sidebar-collapsed", this._collapsed);
+    } catch (e) {
+      console.warn(
+        "[storm-card] ⚠️ localStorage write failed — sidebar state will not persist. Reason:",
+        e.message,
+      );
+    }
     if (this._config.debug_log) {
       console.log("[storm-card] Toggle - Collapsed:", this._collapsed);
     }
@@ -190,7 +209,6 @@ class StormCustomSidebar extends LitElement {
       }
 
       let text = await response.text();
-
       text = text.replace(/<script[\s\S]*?<\/script>/gi, "");
       text = text.replace(/\s+on\w+="[^"]*"/gi, "");
       text = text.replace(/\s+on\w+='[^']*'/gi, "");
@@ -219,6 +237,7 @@ class StormCustomSidebar extends LitElement {
           style="width:${size}; height:${size}; object-fit:contain;"
         />`;
       }
+
       const cached = this._svgCache.get(svg);
       if (cached) {
         return html`<span
@@ -227,6 +246,7 @@ class StormCustomSidebar extends LitElement {
           .innerHTML="${cached}"
         ></span>`;
       }
+
       this._loadSvg(svg).then((result) => {
         if (result) this.requestUpdate();
       });
@@ -309,6 +329,7 @@ class StormCustomSidebar extends LitElement {
     const s = this._config.styles || {};
     const buttons = this._config.buttons || [];
     const footer = this._config.footer || {};
+    const isTouch = window.matchMedia("(hover: none)").matches;
 
     const user = this.hass?.user;
     const userId = user?.id;
@@ -636,6 +657,21 @@ class StormCustomSidebar extends LitElement {
           color: ${iconColorHover};
         }
 
+        @media (hover: none) {
+          .nav-button:hover ha-icon,
+          .nav-button:hover .svg-icon {
+            color: ${iconColor};
+          }
+          .nav-button:hover span {
+            color: ${iconColor};
+          }
+          .nav-button.active:hover ha-icon,
+          .nav-button.active:hover .svg-icon,
+          .nav-button.active:hover span {
+            color: ${iconColorActive};
+          }
+        }
+
         .nav-button.active ha-icon,
         .nav-button.active .svg-icon {
           color: ${iconColorActive};
@@ -756,7 +792,8 @@ class StormCustomSidebar extends LitElement {
               <div
                 class="nav-button ${isActive ? "active" : ""}"
                 @mouseenter="${() => {
-                  if (buttons[index].name !== "---") this._hoverIndex = index;
+                  if (!isTouch && buttons[index].name !== "---")
+                    this._hoverIndex = index;
                 }}"
                 @mouseleave="${() => (this._hoverIndex = -1)}"
                 @click="${() => this._navigate(btn.path)}"

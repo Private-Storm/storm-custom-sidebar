@@ -2,7 +2,7 @@
 
 > A highly customizable, animated sidebar navigation card for [Home Assistant](https://www.home-assistant.io/) Lovelace dashboards.
 
-![Version](https://img.shields.io/badge/version-1.2.0-blueviolet?style=flat-square)
+![Version](https://img.shields.io/badge/version-1.4.0-blueviolet?style=flat-square)
 ![HA](https://img.shields.io/badge/Home%20Assistant-compatible-41BDF5?style=flat-square&logo=home-assistant)
 ![License](https://img.shields.io/badge/license-GPL-green?style=flat-square)
 

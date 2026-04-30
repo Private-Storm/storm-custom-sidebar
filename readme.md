@@ -6,7 +6,7 @@
 ![HA](https://img.shields.io/badge/Home%20Assistant-compatible-41BDF5?style=flat-square&logo=home-assistant)
 ![License](https://img.shields.io/badge/license-GPL-green?style=flat-square)
 
-![Preview](https://github.com/Private-Storm/storm-custom-sidebar/blob/main/sidebar.png)
+![Preview](sidebar.png)
 
 ---
 

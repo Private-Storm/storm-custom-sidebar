@@ -13,6 +13,7 @@
  * License:       GPL
  *
  * GitHub:        https://github.com/Private-Storm/storm-custom-sidebar
+ * Codeberg:      https://codeberg.org/private-storm/storm-custom-sidebar
  *
  * Features:
  * - Responsive design (Collapsed/Expanded)

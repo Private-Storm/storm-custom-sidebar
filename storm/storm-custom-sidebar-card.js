@@ -21,6 +21,7 @@
  * - Dynamic margins and paddings via YAML
  * - Custom scrollbar styling (Webkit-based)
  *
+ *
  * Change Log:
  * v1.0.0 - Initial release, fixed icon centering and selection bar logic.
  * v1.1.0 - Added Badge support.

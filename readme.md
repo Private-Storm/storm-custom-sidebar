@@ -2,7 +2,7 @@
 
 > A highly customizable, animated sidebar navigation card for [Home Assistant](https://www.home-assistant.io/) Lovelace dashboards.
 
-![Version](https://img.shields.io/badge/version-1.4.0-blueviolet?style=flat-square)
+![Version](https://img.shields.io/badge/version-1.5.0-blueviolet?style=flat-square)
 ![HA](https://img.shields.io/badge/Home%20Assistant-compatible-41BDF5?style=flat-square&logo=home-assistant)
 ![License](https://img.shields.io/badge/license-GPL-green?style=flat-square)
 
@@ -109,7 +109,7 @@ styles:
   footer-title-font-size: 0.9rem
   footer-subtitle-font-size: 0.7rem
   avatar-size: 36px
-
+  font-family: Space Grotesk
 footer:
   subtitle: Admin
   content: If you want a guarantee, buy a toaster.
@@ -177,15 +177,16 @@ buttons:
 
 ### Sidebar
 
-| Property        | Default       | Description                  |
-| --------------- | ------------- | ---------------------------- |
-| `width`         | `260px`       | Width when expanded          |
-| `width-min`     | `70px`        | Width when collapsed         |
-| `background`    | `#1a1a1a`     | Background color             |
-| `color`         | `#f5f6fa`     | General text color           |
-| `border-radius` | `16px`        | Corner radius of the sidebar |
-| `border-width`  | `0px`         | Border width                 |
-| `border-color`  | `transparent` | Border color                 |
+| Property        | Default                                          | Description                  |
+| --------------- | ------------------------------------------------ | ---------------------------- |
+| `width`         | `260px`                                          | Width when expanded          |
+| `width-min`     | `70px`                                           | Width when collapsed         |
+| `background`    | `#1a1a1a`                                        | Background color             |
+| `color`         | `#f5f6fa`                                        | General text color           |
+| `border-radius` | `16px`                                           | Corner radius of the sidebar |
+| `border-width`  | `0px`                                            | Border width                 |
+| `border-color`  | `transparent`                                    | Border color                 |
+| `font-family`   | `var(--primary-font-family, Roboto, sans-serif)` | Font Family                  |
 
 ### Spacing
 
@@ -313,6 +314,7 @@ Badges display a live entity value as a small pill overlay on the navigation ite
 | `border-color`    | —        | Border color of the badge                       |
 | `animation`       | —        | `true` / `false` — enables sonar ping animation |
 | `animation-color` | —        | Color of the sonar ping animation ring          |
+| `animation-type`  | —        | Name of the animation.                          |
 
 ### Badge Example
 
@@ -327,6 +329,7 @@ Badges display a live entity value as a small pill overlay on the navigation ite
     border-color: "rgba(255,255,0,0.9)"
     animation: true
     animation-color: "rgba(255,255,0,1)"
+    animation-type: wobble
 ```
 
 The badge shows the current state of `switch.bedroom_lamp` (e.g. `on` / `off`) with a pulsing sonar animation in yellow.

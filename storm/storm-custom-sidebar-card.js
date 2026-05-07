@@ -21,13 +21,15 @@
  * - Dynamic margins and paddings via YAML
  * - Custom scrollbar styling (Webkit-based)
  *
- *
  * Change Log:
  * v1.0.0 - Initial release, fixed icon centering and selection bar logic.
  * v1.1.0 - Added Badge support.
  * v1.2.0 - Added SVG support.
  * v1.3.0 - Sidebar state (collapsed/expanded) persisted via localStorage.
  * v1.4.0 - Mobile hover fix via @media (hover: none).
+ * v1.5.0 - Added Font-Family support.
+ *        - Added Animation types for badge elements (
+ *            sonar, glow, blink, bounce, double-flash, elastic, wobble ).
  * ==================================================================================
  */
 import {
@@ -301,9 +303,15 @@ class StormCustomSidebar extends LitElement {
       b["animation-color"] || s["animation-color"] || bgColor,
     );
 
+    const animType =
+      (btn.badge && btn.badge["animation-type"]) ||
+      (this._config.styles && this._config.styles["badge-animation-type"]) ||
+      "sonar";
+
     return html`
       <div
         class="badge-pill ${showAnim ? "animate" : ""}"
+        data-anim-type="${animType}"
         style="
           background-color: ${bgColor};
           color: ${fgColor};
@@ -422,6 +430,10 @@ class StormCustomSidebar extends LitElement {
       : "calc(100% - 32px)";
     const badgeBorderColor = cv(s["badge-border-color"] || bgColor); // Nutzt Sidebar-BG als Default
 
+    const fontFamily = cv(
+      s["font-family"] || "var(--primary-font-family, Roboto, sans-serif)",
+    );
+
     return html`
       <style>
         :host {
@@ -441,6 +453,7 @@ class StormCustomSidebar extends LitElement {
           padding: ${paddingTop} ${paddingRight} ${paddingBottom} ${paddingLeft};
           box-sizing: border-box;
           overflow: hidden;
+          font-family: ${fontFamily} !important;
         }
 
         #nav-bar {
@@ -621,18 +634,110 @@ class StormCustomSidebar extends LitElement {
           inset: 0;
           border-radius: 999px;
           background: var(--anim-color);
-          opacity: 0.7;
           z-index: -1;
-          animation: ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+          pointer-events: none;
         }
 
-        @keyframes ping {
+        .badge-pill.animate[data-anim-type="sonar"]::before {
+          animation: sonar 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+        }
+
+        .badge-pill.animate[data-anim-type="glow"]::before {
+          background: transparent;
+          box-shadow: 0 0 3px 2px var(--anim-color);
+          animation: glow 2s ease-in-out infinite;
+        }
+
+        .badge-pill.animate[data-anim-type="soft-pulse"]::before {
+          animation: soft-pulse 2s ease-in-out infinite;
+        }
+
+        .badge-pill.animate[data-anim-type="double-flash"]::before {
+          animation: double-flash 2s ease-in-out infinite;
+        }
+
+        .badge-pill.animate[data-anim-type="bounce"] {
+          animation: bounce 2s ease infinite;
+        }
+
+        .badge-pill.animate[data-anim-type="elastic"] {
+          animation: elastic-bounce 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+        }
+
+        .badge-pill.animate[data-anim-type="wobble"] {
+          animation: wobble 2s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+          transform-origin: center;
+        }
+
+        @keyframes wobble {
+          0%, 100% { transform: translateX(0) rotate(0); }
+          15% { transform: translateX(-3px) rotate(-5deg); }
+          30% { transform: translateX(2px) rotate(3deg); }
+          45% { transform: translateX(-2px) rotate(-3deg); }
+          60% { transform: translateX(1px) rotate(2deg); }
+          75% { transform: translateX(-1px) rotate(-1deg); }
+        }
+
+
+        @keyframes elastic-bounce {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.3); }
+        }
+
+        @keyframes bounce {
+          0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+          }
+          40% {
+            transform: translateY(-4px);
+          }
+          60% {
+            transform: translateY(-2px);
+          }
+        }
+
+        @keyframes double-flash {
+          0%, 100% { opacity: 0; transform: scale(1); }
+          10%, 30% { opacity: 0.8; transform: scale(1.2); }
+          20% { opacity: 0.4; transform: scale(1.1); }
+          40% { opacity: 0; transform: scale(1); }
+        }
+
+        @keyframes soft-pulse {
+          0%, 100% {
+            filter: brightness(1);
+            transform: scale(1);
+          }
+          50% {
+            filter: brightness(1.6);
+            transform: scale(1.1);
+          }
+        }
+
+        @keyframes sonar {
           75%,
           100% {
             transform: scale(2.2);
             opacity: 0;
           }
         }
+
+        @keyframes glow {
+          0%,
+          100% {
+            transform: scale(1);
+            opacity: 0.6;
+            box-shadow: 0 0 3px 2px var(--anim-color);
+          }
+          50% {
+            transform: scale(
+              1.15
+            )
+            opacity: 0.4;
+            box-shadow: 0 0 5px 4px var(--anim-color);
+          }
+        }
+
         .nav-button.active {
           background: ${highlightColor};
           border-radius: ${selectionRadius};
